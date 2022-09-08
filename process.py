@@ -21,7 +21,7 @@ def process(file, sheet_name, print_flag=True):
 
 def main():
     prettyplot()
-    file = '/Users/valenetjong/Desktop/PHYS 3310/GammaRay/data/dat-19.xlsx'
+    file = '/Users/valenetjong/Desktop/PHYS 3310/GammaRay/data/dat.xlsx'
     sheets = ['Al', 'Cu','Pb']
     for sheet_name in sheets: 
         process(file, sheet_name)

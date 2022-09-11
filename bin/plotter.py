@@ -13,15 +13,15 @@ def prettyplot():
 def visualize(ln_I, err_dat, mu_pred, geom, sheet_name):
     plt.clf()
     xs, ys = ln_I[:,0], ln_I[:,1]
-    plt.plot(xs, mu_pred*xs, c = '#A9561E', 
-    label = "fit, mu= " + str(round(mu_pred,3)))
     plt.plot(xs, ys, '-o', c = '#580F41', label = "raw")
+    plt.plot(xs, mu_pred*xs, linewidth=1.75, c = '#A9561E',
+    label = "fit, mu= " + str(round(mu_pred,3)))
     
     # Create error bars
     y_ebars = [(y_i-err_i, y_i+err_i) for y_i,err_i in zip(list(ys), list(err_dat))]
-    for i in range(len(y_ebars)):
+    plt.vlines(x=xs[0], ymin=y_ebars[0][0], ymax=y_ebars[0][1], colors = "grey", label = "err")
+    for i in range(1,len(y_ebars)):
         plt.vlines(x=xs[i], ymin=y_ebars[i][0], ymax=y_ebars[i][1], colors = "grey")
-
     plt.xlabel('Absorber Thickness (cm)')
     plt.ylabel('|ln((I-Ib)/I0)|')
     dir = '/Users/valenetjong/Desktop/PHYS 3310/GammaRay/plots'

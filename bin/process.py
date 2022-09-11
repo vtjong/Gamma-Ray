@@ -21,6 +21,10 @@ def process(file, sheet_name, print_flag=True):
         ln_I[:,1] = np.abs(ln_I[:,1]-ln_I_0)
         mu, cv = mu_fit(ln_I)
         save_it_up(sheet_name, mu, cv, geom, filename='stats.csv')
+        if geom==1.0:
+            err_dat[:4]
+        else:
+            err_dat[4:]
         if print_flag:
             visualize(ln_I, err_dat, mu, geom, sheet_name)
 

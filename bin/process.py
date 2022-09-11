@@ -6,22 +6,23 @@ from plotter import prettyplot, visualize
 
 def process(file, sheet_name, print_flag=True):
     df = pd.read_excel(file, sheet_name=sheet_name, 
-        usecols=['Orientation (1/2)', 'Absorber Thickness (cm)','ln(I)'])
+        usecols=['Orientation (1/2)', 'Absorber Thickness (cm)','ln(I)','δ_tot'])
     data = np.array(df)
-    ln_I_0 = data[0,2]
-    geoms = set(data[:,0])
+    y_dat, err_dat = data[:,:3], data[1:,3]
+    ln_I_0 = y_dat[0,2]
+    geoms = set(y_dat[:,0])
 
     # Get rid of ln(I_0) row
-    data = data[1:]     
+    y_dat = y_dat[1:]     
     
     # Iterate through all orientations
     for geom in list(geoms):
-        ln_I = data[np.where(data[:,0]==geom)][:,1:]
+        ln_I = y_dat[np.where(y_dat[:,0]==geom)][:,1:]
         ln_I[:,1] = np.abs(ln_I[:,1]-ln_I_0)
         mu, cv = mu_fit(ln_I)
         save_it_up(sheet_name, mu, cv, geom, filename='stats.csv')
         if print_flag:
-            visualize(ln_I, mu, geom, sheet_name)
+            visualize(ln_I, err_dat, mu, geom, sheet_name)
 
 def f_mu (x,mu): return mu*x
 
@@ -41,7 +42,7 @@ def save_it_up(sheet_name, mu, cv, geom, filename='stats.csv'):
 
 def main():
     prettyplot()
-    file = '/Users/valenetjong/Desktop/PHYS 3310/GammaRay/data/dat.xlsx'
+    file = '/Users/valenetjong/Desktop/PHYS 3310/GammaRay/data/dat-14.xlsx'
     sheets = ['Al', 'Cu','Pb']
     for sheet_name in sheets: 
         process(file, sheet_name)
